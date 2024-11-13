@@ -14,7 +14,6 @@ const generateTokens = (res, payload) => {
     { expiresIn: '30d' }
   );
 
-  console.log(payload,'[payl;od')
   const cookieName = payload.userRole === 'admin' ? 'adminRefreshToken' : 'userRefreshToken';
 
   res.cookie(cookieName, refreshToken, {

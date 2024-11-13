@@ -120,9 +120,6 @@ const sendInvitation = async (emails, workspaceId) => {
   const encryptedEmail = encryptEmail(email);
   const token = generateToken();
   const invitationLink = `http://localhost:5173/signup?token=${token}&workspaceId=${workspaceId}&email=${encryptedEmail}`;
-  console.log('iniviation link',invitationLink)
-  console.log('in serviceeeee workspace id', workspaceId)
-
   const mailOptions = {
     from: config.GMAIL_USER,
     to: email,

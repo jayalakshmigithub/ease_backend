@@ -13,14 +13,13 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  members: {
-    type: Array,
-    default: [],
-  },
-  // masterId: {
-  //   type: String,
-  //   required: true,
-  // },
+  members: [
+    {
+        _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+        email: { type: String, required: true }
+    }
+],
+
   toDate: {
     type: String,
     required: true,
@@ -37,7 +36,17 @@ const projectSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  tasks:{
+    type:Array,
+    default:[]
+  }
+  
 });
 
-const projectModel=mongoose.model("projects",projectSchema,);
-export {projectModel}
+const projectModel = mongoose.model("projects", projectSchema);
+export { projectModel };
+
+// masterId: {
+//   type: String,
+//   required: true,
+// },

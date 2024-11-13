@@ -54,7 +54,36 @@ const getUnblockUser = async(_id)=>{
     }
 }
 
+const getAllworkspacesAdmin = async()=>{
+    try {
+        const getWorkspaceList = await adminRepository.findAllWorkspacesAdmin()
+        return getWorkspaceList
+    } catch (error) {
+        console.error('error occured in getWorkspaceList',error);
+        throw error   
+    }
+}
 
+const getAllProjects = async()=>{
+    try {
+        const getProjectList = await adminRepository.findAllProjects()
+        return getProjectList
+    } catch (error) {
+        console.error('error occured in getWorkspaceList',error);
+        throw error 
+    }
+}
+
+const getWorkspaceById = async(workspaceId)=>{
+ try {
+       const workspace = await adminRepository.findWorkspaceById(workspaceId)
+       return workspace
+ } catch (error) {
+    console.error('error occured in getWorkspaceList',error);
+        throw error
+ }
+
+}
 
 
 export{
@@ -62,6 +91,9 @@ export{
     getAdminById,
     getAllUsers,
     getBlockUsers,
-    getUnblockUser
+    getUnblockUser,
+    getAllworkspacesAdmin,
+    getAllProjects,
+    getWorkspaceById
 
 }

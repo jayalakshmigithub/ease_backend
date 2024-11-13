@@ -1,5 +1,7 @@
 import { adminModel } from "../model/adminModel.js";
+import { projectModel } from "../model/projectModel.js";
 import { userModel } from "../model/userModel.js";
+import { workspaceModel } from "../model/workspaceModel.js";
 
 
 
@@ -19,7 +21,6 @@ const findAdminByEmail = async(email)=>{
 const findAdminById = async(_id)=>{
     try {
         const admin = await adminModel.findById(_id)
-        console.log(admin,'adminnn')
         return admin
     } catch (error) {
         console.log("Error findAdminById:", error);
@@ -40,6 +41,8 @@ const findAllUsers = async()=>{
 }
 
 
+
+
 const blockUser = async(_id)=>{
     try {
         const blockedUser = await userModel.findByIdAndUpdate(
@@ -50,7 +53,6 @@ const blockUser = async(_id)=>{
         if (!blockedUser) {
             throw new Error("User not found");
           }
-          console.log('User blocked in repository');
           return blockedUser;
         
     } catch (error) {
@@ -71,7 +73,6 @@ const unblockUser = async(_id)=>{
         if (!unblockedUser) {
             throw new Error("User not found");
           }
-          console.log('User unblocked in repository');
           return unblockedUser;
         
     } catch (error) {
@@ -82,12 +83,69 @@ const unblockUser = async(_id)=>{
 }
 
 
+const findAllWorkspacesAdmin = async()=>{
+    try {
+        const workspaceList =  workspaceModel.find().populate('OwnerId', 'name');
+        return workspaceList
+    } catch (error) {
+        console.error('error in workspace lisitng repository',error);
+        throw error
+        
+        
+    }
+}
+const findWorkspaceById = async(workspaceId)=>{
+    try {
+        const workspaceById = await workspaceModel.findById(workspaceId)
+        return workspaceById
+    } catch (error) {
+        console.error('error in workspace lisitng repository',error);
+        throw error
+        
+    }
+}
+
+const findAllProjects = async()=>{
+    try {
+        const projectList = projectModel.find()
+        return projectList
+    } catch (error) {
+        console.error('error in workspace lisitng repository',error);
+        throw error
+        
+    }
+}
+
+
+// const findAllProjects = async () => {
+//     try {
+
+//         const projectList = await projectModel.find();
+
+        
+//         for (const project of projectList) {
+//             const workspaceId = project.workspaceId;
+//             project.workspaceDetails = await workspaceModel.findById(workspaceId);
+//         }
+
+//         return projectList;
+//     } catch (error) {
+//         console.error('Error in workspace listing repository', error);
+//         throw error;
+//     }
+// };
+
+
+
 
 export {
     findAdminByEmail,
     findAdminById,
     findAllUsers,
     blockUser,
-    unblockUser
+    unblockUser,
+    findAllWorkspacesAdmin,
+    findAllProjects,
+    findWorkspaceById
 
 }

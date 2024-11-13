@@ -6,7 +6,7 @@ import cors from 'cors';
 import userRoutes from '../src/routes/userRoutes.js';
 import { refreshTokenController } from './controllers/refreshTokecController.js';
 import adminRouter from './routes/adminRoutes.js';
-
+// import { initializeChatSocket } from './sockets/chatSocket.js';
 
 
 const app = express()
@@ -21,6 +21,8 @@ app.use(cors({
     credentials:true
 }))
  
+// initializeSocket(io, chatService);
+
 app.use((req,res,next)=>{
     res.setHeader('Cross-Origin-Opener-Policy','same-origin')
     res.setHeader('Cross-Origin-Embeded-Policy','require-corp')

@@ -10,17 +10,9 @@ import config from "../config/config.js";
 
 const refreshTokenController = async (req, res) => {
     try {
-        console.log('USER')
         const userRole = req.body.userRole;
-        console.log(userRole,"what is user role");
-        
         const cookieName = userRole === "admin" ? "adminRefreshToken" : "userRefreshToken";
-       console.log(req.cookies,'cooieess')
         const cookieToken = req.cookies[cookieName];
-        console.log(cookieToken,'cookieToken')
-        
-        console.log(cookieName,'cookiname')
- 
         if (!cookieToken) {
             return res.status(401).json({ message: "No token, authorization denied or token mismatch" });
         }
@@ -29,7 +21,6 @@ const refreshTokenController = async (req, res) => {
         try {
             
             decoded = jwt.verify(cookieToken, config.JWT_SECRET);
-            console.log(decoded,'decodeee')
         } catch (err) {
             console.error("Token verification error", err);
             return res.status(401).json({ message: "Invalid token" });
@@ -40,14 +31,15 @@ const refreshTokenController = async (req, res) => {
         }
 
         let  user;
-        if(userRole === " user "){
+        // console.log('userrorle before',userRole)
+
+        if(userRole === "user"){
             user = await userService.getUserById(decoded.userId);
             if(user?.isBlocked){
                 return res.status(401).json({message:"user is blocked "})
             }
 
         }else if(userRole === "admin"){
-            console.log('userrorle',userRole)
             user = await adminService.getAdminById(decoded.userId);
         }else{
             return res.status(401).json({message:"invalid user role"})
@@ -63,6 +55,7 @@ const refreshTokenController = async (req, res) => {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
         });
+        
     } catch (error) {
         console.error("Error in refreshTokenController", error);
         return res.status(500).json({ message: "Internal server error" });

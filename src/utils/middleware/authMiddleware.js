@@ -3,7 +3,6 @@ import config from '../../config/config.js';
 
 const verifyToken = (req, res, next) => {
   const token = req.headers['authorization'];
-  console.log(token , ' token hinfo');
   if (!token) {
     return res.status(403).json({ message: 'No token provided!' });
   }
@@ -16,7 +15,6 @@ const verifyToken = (req, res, next) => {
     }
     if (decoded) {
       req.userId = decoded.userId;
-      console.log(req.userId,' at middlearwe')
     } else {
       console.log('rerror at middlearwe')
 

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const invitationSchema = new mongoose.Schema({
     email:{
         type:String,
@@ -11,6 +12,7 @@ const invitationSchema = new mongoose.Schema({
         required:true,
 
     }
+    
 },{timestamps:true})
 
 invitationSchema.index({createdAt:1},{expireAfterSeconds:30*24*60*60})

@@ -47,6 +47,7 @@
 import * as workspaceServices from '../services/workspaceServices.js'
 import { workspaceModel } from "../model/workspaceModel.js"
 import { userModel } from "../model/userModel.js";
+import { findworkspaceById } from '../repository/workspaceRepository.js';
 
 
 
@@ -67,24 +68,87 @@ const createWorkspace = async(req,res)=>{
 }
 
 
+
+// const getWorkspaces = async (req, res) => {
+//     try {
+//         // const {ownerId} = req.body;
+//         console.log(req.userId,'ownerid')
+//         const ownerId = req.userId;
+//         const userId = req.userId
+        
+//         if(!ownerId){
+//         return res.status(500).json({ message: 'no userid  error' })
+//         }
+
+//         const workspace = await workspaceServices.listWorkspaceByOwner(ownerId)
+
+//         const sharedWorkspace = await workspaceServices.getSharedWorkspaces(userId)
+//         console.log('shared workspaceeeeeeee',sharedWorkspace)
+       
+//         return res.status(200).json({ workspace , sharedWorkspaces: sharedWorkspace})
+//     } catch (error) {
+//         console.error('error gettworkkks:', error);
+//         return res.status(500).json({ message: 'internal server error' })
+//     }
+// }
+
+
 const getWorkspaces = async (req, res) => {
     try {
-        // const {ownerId} = req.body;
-        console.log(req.userId,'ownerid')
         const ownerId = req.userId;
-        
-        if(!ownerId){
-        return res.status(500).json({ message: 'no userid  error' })
+        const userId = req.userId;
+
+        if (!ownerId) {
+            return res.status(500).json({ message: 'No user ID error' });
         }
 
-        const workspace = await workspaceServices.listWorkspaceByOwner(ownerId)
-       
-        return res.status(200).json({ workspace })
+        const workspace = await workspaceServices.listWorkspaceByOwner(ownerId);
+        const sharedWorkspace = await workspaceServices.getSharedWorkspaces(userId);
+        return res.status(200).json({ workspace, sharedWorkspace });
     } catch (error) {
-        console.error('error gettworkkks:', error);
-        return res.status(500).json({ message: 'internal server error' })
+        console.error('Error fetching workspaces:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const sharedWorkspace = async(req,res)=>{
+    try {
+        const userId = req.userId
+        if (!userId) {
+            return res.status(400).json({ message: 'No user ID found' });
+        }
+        const sharedWorkspace = await workspaceServices.getSharedWorkspaces(userId)
+        return res.status(200).json({sharedWorkspace})
+    } catch (error) {
+        console.error('error happenend in sharedWorkspace controller fn',error);
+        return res.status(500).json({message:'internal server error'})
+        
+    }
+
 }
+
+
+
 
 //new in 11/24
 
@@ -106,7 +170,7 @@ const getWorkspaces = async (req, res) => {
 const getMemberWorkspaces = async (req, res) => {
     try {
         const userId = req.userId;
-        const email = req.email; // Assuming email is in the token or request
+        const email = req.email; 
         
         if (!userId || !email) {
             return res.status(400).json({ message: 'User ID or email not provided' });
@@ -162,13 +226,13 @@ const inviteUserToWorkspace = async (req, res) => {
     const { userId, workspaceId } = req.body;
 
     try {
-        // Update user to mark as invited and add workspace to sharedWorkspaces
+       
         await userModel.findByIdAndUpdate(userId, {
             $set: { isInvited: true },
             $push: { sharedWorkspaces: workspaceId }
         });
 
-        // Optionally update workspace to track invited users
+        
         await workspaceModel.findByIdAndUpdate(workspaceId, {
             $push: { invitedUsers: userId }
         });
@@ -218,15 +282,47 @@ const getAllWorkspaces = async (req, res) => {
 };
 
 
+const getAllMembersByWorkspaceId = async (req, res) => {
+    try {
+        const { workspaceId } = req.params;
+        const memberEmails = await workspaceServices.findMembersByWorkspaceId(workspaceId);
+        return res.status(200).json(memberEmails); 
+    } catch (error) {
+        console.error("Error in getAllMembersByWorkspaceId:", error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+const deleteWorkspaceController = async (req, res) => {
+    const workspaceId = req.params.id;
+  
+    try {
+      await workspaceServices.deleteWorkspace(workspaceId);
+      res.status(200).json({ message: 'Workspace deleted successfully' });
+    } catch (error) {
+      if (error.message === 'Workspace not found') {
+        res.status(404).json({ error: error.message });
+      } else {
+        console.error('Error deleting workspace:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  };
+
+
+
 export {
     createWorkspace,
     getWorkspaces,
+    sharedWorkspace,
     getEachWorkspace,
     getMemberWorkspaces,
     // getInvitedWorkspaces,
     inviteUserToWorkspace,
     addMembersToWorkspace,
-    getAllWorkspaces
+    getAllWorkspaces,
+    getAllMembersByWorkspaceId,
+    deleteWorkspaceController
 }
 
 
@@ -237,6 +333,10 @@ export {
 
 
 
+
+
+
+//check after writing in the project controller
 
 
 

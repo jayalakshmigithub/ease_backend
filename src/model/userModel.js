@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true, 
         required: true 
     },
     password:{
@@ -20,11 +19,11 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    isInvited:{
-        type:Boolean,
-        default:false
-
+    isInvited: { 
+        type: Array, 
+        default: [] 
     },
+        
     otp:{
         type:String
     },
@@ -36,12 +35,15 @@ const userSchema = new mongoose.Schema({
         type:Array,
         default:[]
     },
-    sharedWorkspaces: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Workspace', 
-        },
-      ],
+    sharedWorkspaces: { 
+        type: Array, 
+        default: [] 
+    },
+
+      workspaceId: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Workspace', 
+    }
   
 },{timestamps:true});
 

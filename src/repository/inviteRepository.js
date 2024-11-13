@@ -11,12 +11,10 @@ const saveToken = async ({ email, workspaceId, token }) => {
 };
 
 const findToken = async (token, email, workspaceId) => {
-  console.log('got token')
   return await invitationModel.findOne({ token, email, workspaceId });
 };
 
 const markTokenAsUsed = async (token, email, workspaceId) => {
-  console.log('token used')
   await invitationModel.findOneAndDelete({ token, email, workspaceId });
 };
 

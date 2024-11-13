@@ -28,11 +28,19 @@ const workspaceSchema = new mongoose.Schema({
 
     // },
 
-    members: [{  
-        email: { type: String, required: true },
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
-    }],
+    members: [
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'user'
+        }
+    ],
+    
     projects:{
+        type:Array,
+        default:[]
+
+    },
+    tasks:{
         type:Array,
         default:[]
 

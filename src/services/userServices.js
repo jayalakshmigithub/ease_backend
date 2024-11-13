@@ -1,4 +1,6 @@
 import * as userRepository from "../repository/userRepository.js";
+import { userModel } from "../model/userModel.js";
+import bcrypt from 'bcryptjs';
 
 
 const getByEmail = async(email)=>{
@@ -22,10 +24,22 @@ const getUserById = async(_id)=>{
     }
 }
 
-const getCreateUser = async(userData)=>{
+// const getCreateUser = async(data)=>{
+//     try {
+//         const user = await userRepository.createUser(data);
+//         console.log('in get create user',user)
+//         return user
+        
+//     } catch (error) {
+//         console.error(error)
+//     }
+
+// }
+
+
+const getCreateUser = async(data)=>{
     try {
-        const user = await userRepository.createUser(userData);
-        console.log('in get create user',userData)
+        const user = await userRepository.createUser(data);
         return user
         
     } catch (error) {
@@ -63,7 +77,47 @@ const getUpdatedUser = async(userId,filteredUsers)=>{
     }
 }
 
+const changePassword = async (email, currentPassword, newPassword) => {
+    try {
+   
+      const user = await userModel.findOne({ email });
+  
+      if (!user) {
+        throw new Error("User not found");
+      }
+  
+    
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+  
+      if (!isPasswordValid) {
+        throw new Error("Current password is incorrect");
+      }
+  
+     
+      user.password = await bcrypt.hash(newPassword, 10);
+      await user.save();
+  
+      return user;
+    } catch (err) {
+      throw new Error(`Error changing password: ${err.message}`);
+    }
+  };
 
+
+const getUpdatePassword = async(email,securePassword)=>{
+    try{
+        return await userRepository.updatePassword(email,securePassword)
+    } catch (err) {
+        throw new Error(`Error getUpdatePassword: ${err.message}`);
+      }
+}
+const getChangePassword = async(userId,securePassword)=>{
+    try{
+        return await userRepository.updatePassword(userId,securePassword)
+    } catch (err) {
+        throw new Error(`Error getChangePassword: ${err.message}`);
+      }
+}
 
 export  {
     getCreateUser,
@@ -71,5 +125,8 @@ export  {
     getUserById,
     getUserByEmail,
     getCreateUserByGoogle,
-    getUpdatedUser
+    getUpdatedUser,
+    changePassword,
+    getUpdatePassword,
+    getChangePassword
 }

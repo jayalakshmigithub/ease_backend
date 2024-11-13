@@ -107,11 +107,39 @@ const unblockUserAccount = async(req,res)=>{
     }
 }
 
+const workspaceList = async(req,res)=>{
+    try {
+        const workspaceListInAdmin = await adminServices.getAllworkspacesAdmin()
+        return res.status(200).json(workspaceListInAdmin)
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).json({message:'internal server error'})
+        
+    }
+
+}
+
+
+
+const projectList = async(req,res)=>{
+    try {
+        const projectListInAdmin = await adminServices.getAllProjects()
+        return res.status(200).json(projectListInAdmin)
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).json({message:'internal server error'})
+    }
+}
+
+
 export{
     adminLogin,
     usersList,
     blockUserAccount,
-    unblockUserAccount
+    unblockUserAccount,
+    workspaceList,
+    projectList,
+    // WorkspaceById
     // adminSignup
 }
 
