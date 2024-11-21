@@ -119,7 +119,7 @@ const sendInvitation = async (emails, workspaceId) => {
   for(const email of emails){
   const encryptedEmail = encryptEmail(email);
   const token = generateToken();
-  const invitationLink = `http://localhost:5173/signup?token=${token}&workspaceId=${workspaceId}&email=${encryptedEmail}`;
+  const invitationLink = `${config.API_URL}/signup?token=${token}&workspaceId=${workspaceId}&email=${encryptedEmail}`;
   const mailOptions = {
     from: config.GMAIL_USER,
     to: email,
