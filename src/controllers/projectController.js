@@ -28,27 +28,7 @@ const getProjectsInWorkspace = async(req,res)=>{
     }
 }
 
-//getting members in project
 
-// const getProjectsWithMembers = async (req, res) => {
-//     const { workspaceId } = req.params;
-
-//     if (!workspaceId) {
-//         return res.status(400).json({ message: "Workspace ID is required in the URL parameters" });
-//     }
-
-//     try {
-       
-//         const projects = await projectServices.fetchProjectsByWorkspaceWithMembers(workspaceId);
-//         console.log('projects in getProjectsWithMembers',projects)
-//         res.status(200).json({ projects });
-//     } catch (error) {
-//         console.error("Error in getProjectsWithMembers controller:", error);
-//         res.status(500).json({ message: "Internal Server Error" });
-//     }
-// };
-
-// new for getting project members
 const getProjectMembers = async (req, res) => {
     const projectId = req.params.id;
     try {
@@ -88,7 +68,7 @@ export{
     projectCreation,
     getProjectsInWorkspace,
     getEachProject,
-    // getProjectsWithMembers
+   
     getProjectMembers
 
 }

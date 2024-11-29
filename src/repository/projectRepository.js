@@ -3,57 +3,8 @@ import { workspaceModel } from '../model/workspaceModel.js'
 import{ userModel} from '../model/userModel.js'
 import mongoose from 'mongoose'
 
-// const createProject = async(projectData)=>{
-//     try {
-
-//         const response = await projectModel.create(projectData)
-//         await workspaceModel.findByIdAndUpdate(
-//             {_id:projectData.workspaceName},
-//             {$push:{projects:response._id}}
-//         );
-//         return 'project created succesfully'
-//     } catch (error) {
-//         console.log('error in creating project',error)
-//         throw error 
-        
-//     }
-// }
 
 
-//  OG THE OG
-
-// const createProject =async(projectData)=>{
-//     try {
-//         const workspace = await workspaceModel.findById(projectData.workspaceName);
-        
-//         if (!workspace) {
-//             throw new Error("Workspace not found");
-//         }
-
-//         const newProject = new projectModel({
-//             projectName: projectData.projectName,
-//             Description: projectData.Description,
-//             workspaceName:projectData.workspaceName,
-//             members:workspace.members,
-//             // masterId:projectData.masterId,
-//             fromDate:projectData.fromDate,
-//             toDate:projectData.toDate
-//         })
- 
-
-//         const savedProject = await newProject.save()
-//         console.log('savedProject',savedProject)
-       
-//         await workspaceModel.findByIdAndUpdate(
-//             {_id:projectData.workspaceName},
-//             {$push:{projects:savedProject._id}}
-//         )
-//         return 'project created successfully'
-//     } catch (error) {
-//         console.error('error in repo',error)
-//         throw error   
-//     }
-// }
 
 const createProject =async(projectData)=>{
     try {
@@ -85,22 +36,7 @@ const createProject =async(projectData)=>{
 
 
 
-// const getProjectsWithMembers = async (workspaceId) => {
-//     try {
-        
-//         const projects = await projectModel
-//             .find({ workspaceName: workspaceId })
-//             .populate("members", "email");
 
-//         return projects;
-//     } catch (error) {
-//         console.error("Error fetching projects with members in repository:", error);
-//         throw error;
-//     }
-// };
-
-
-//new for getting members in project
 
 
 const getProjectById = async (projectId) => {
@@ -130,9 +66,6 @@ const getProjects = async(workspaceId)=>{
     try {
         const workspace = await workspaceModel.findById(workspaceId)
 
-        // if(!workspace){
-        //     throw new Error('workspace not found')
-        // }
         
         const projectIds = workspace.projects
 
@@ -161,7 +94,7 @@ export{
     createProject,
     getProjects,
     getEachProject,
-    // getProjectsWithMembers
+
     getProjectById,
    
 }

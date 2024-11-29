@@ -5,31 +5,7 @@ import { adminModel } from '../model/adminModel.js';
 import { comparePassword, hashPassword } from '../utils/functions/password.js';
 
 
-// const adminSignup = async(req,res)=>{
-//     try {
-//         const {email , password} = req.body;
-//         if(!email || !password){
-//             return res.status(400).json({message:" email or password is msising"})
-//         }
-//         const securePassword = await hashPassword(password)
-//         if(!securePassword){
-//             return res.status(400).json({message:"hashpassword error"})
 
-//         }
-//         let admin = await new adminModel({
-//             email,
-//             password:securePassword,
-//             isAdmin:true,
-//         }).save()
-
-  
-//         return res.status(200).json({admin})
-//     } catch (error) {
-//         console.error(error.message)
-//         return res.status(500).json({message:'intrnal server error'});
-        
-//     }
-// }
 const adminLogin = async(req,res)=>{
     try {
         const {email , password} = req.body;
@@ -139,7 +115,6 @@ export{
     unblockUserAccount,
     workspaceList,
     projectList,
-    // WorkspaceById
-    // adminSignup
+  
 }
 

@@ -1,45 +1,5 @@
 
-// import * as workspaceServices from '../services/workspaceServices.js'
 
-
-
-// const createWorkspace = async(req,res)=>{
-//     try {
-//         const {name ,description} = req.body
-//         const OwnerId = req.userId
-
-//     const workspaceData = {name,description,OwnerId}
-//     const workspace = await workspaceServices.getWorkspace(workspaceData)
-//     return res.status(200).json({workspace})
-//     } catch (error) {
-//         console.log(error)
-//         return res.status(500).json({message:'internal server error'})
-        
-//     }
-
-// }
-
-
-// const getWorkspaces = async (req, res) => {
-//     try {
-//         const {ownerId}=req.body;
-//         console.log(ownerId,'ownerid')
-//         if(!ownerId){
-//         return res.status(500).json({ message: 'no userid  error' })
-
-//         }
-//             const worksm = await userServices.getWorkssss(ownerId)
-//   
-//         return res.status(200).json({ worksm })
-//     } catch (error) {
-
-//         console.error('error gettworkkks:', error);
-//         return res.status(500).json({ message: 'internal server error' })
-//     }
-// }
-// export {
-//     createWorkspace
-// }
 
 
 
@@ -67,30 +27,6 @@ const createWorkspace = async(req,res)=>{
 
 }
 
-
-
-// const getWorkspaces = async (req, res) => {
-//     try {
-//         // const {ownerId} = req.body;
-//         console.log(req.userId,'ownerid')
-//         const ownerId = req.userId;
-//         const userId = req.userId
-        
-//         if(!ownerId){
-//         return res.status(500).json({ message: 'no userid  error' })
-//         }
-
-//         const workspace = await workspaceServices.listWorkspaceByOwner(ownerId)
-
-//         const sharedWorkspace = await workspaceServices.getSharedWorkspaces(userId)
-//         console.log('shared workspaceeeeeeee',sharedWorkspace)
-       
-//         return res.status(200).json({ workspace , sharedWorkspaces: sharedWorkspace})
-//     } catch (error) {
-//         console.error('error gettworkkks:', error);
-//         return res.status(500).json({ message: 'internal server error' })
-//     }
-// }
 
 
 const getWorkspaces = async (req, res) => {
@@ -150,22 +86,6 @@ const sharedWorkspace = async(req,res)=>{
 
 
 
-//new in 11/24
-
-// const getMemberWorkspaces = async (req, res) => {
-//     try {
-//         const userId = req.userId;
-        
-//         if (!userId) {
-//             return res.status(400).json({ message: 'No user ID provided' });
-//         }
-//         const workspaces = await workspaceServices.listWorkspaceByMember(userId);
-//         return res.status(200).json({ workspaces });
-//     } catch (error) {
-//         console.error('Error fetching member workspaces:', error);
-//         return res.status(500).json({ message: 'Internal server error' });
-//     }
-// };
 
 const getMemberWorkspaces = async (req, res) => {
     try {
@@ -186,20 +106,6 @@ const getMemberWorkspaces = async (req, res) => {
 };
 
 
-//new in 11/24
-// const getInvitedWorkspaces = async (req, res) => {
-//     try {
-//         const userId = req.userId;
-//         if (!userId) {
-//             return res.status(400).json({ message: 'No user ID provided' });
-//         }
-//         const workspaces = await workspaceService.listInvitedWorkspaces(userId);
-//         return res.status(200).json({ workspaces });
-//     } catch (error) {
-//         console.error('Error fetching invited workspaces:', error);
-//         return res.status(500).json({ message: 'Internal server error' });
-//     }
-// };
 
 
 

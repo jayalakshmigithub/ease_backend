@@ -1,60 +1,6 @@
-// import { workspaceModel } from "../model/workspaceModel.js"
 
 
-// const createWorkspace = async(workspaceData)=>{
-//     try {
-//         // console.log('in repoooo')
-//         // console.log('wrk',workspaceData)
-//         const newWorkspace = new workspaceModel({
-//            name: workspaceData.name,
-//            description:workspaceData.description,
-//            OwnerId:workspaceData.OwnerId
-//         })
-//         await newWorkspace.save()
-//         // console.log('Workspace saved', newWorkspace);
-//         return newWorkspace
-        
-//     } catch (error) {
-//         console.error('Error in repository:', error);
-//         throw error;
-        
-//     }
-// }
-// const getWorkspace = async(ownerId)=>{
-//     try {
-//         const works= await workspaceModel.find({ OwnerId:ownerId});
-//         console.log(works,'we9')
-//         return works
-//     } catch (error) {
-//         console.log("Error findUserByEmail:", error);
-//         throw error;
-// }
-// }
 
-// export {
-//     createWorkspace,
-//     getWorkspace
-// }
-
-// const createWorkspace = async(workspaceData)=>{
-//     try {
-//         // console.log('in repoooo')
-//         // console.log('wrk',workspaceData)
-//         const newWorkspace = new workspaceModel({
-//            name: workspaceData.name,
-//            description:workspaceData.description,
-//            OwnerId:workspaceData.OwnerId
-//         })
-//         await newWorkspace.save()
-//         // console.log('Workspace saved', newWorkspace);
-//         return newWorkspace
-        
-//     } catch (error) {
-//         console.error('Error in repository:', error);
-//         throw error;
-        
-//     }
-// }
 
 import { workspaceModel } from "../model/workspaceModel.js"
 import { userModel } from "../model/userModel.js";
@@ -102,16 +48,7 @@ const createWorkspace = async (workspaceData) => {
 };
 
 
-// const findWorkspaceByOwner = async(ownerId)=>{
-//     try {
-//         const works= await workspaceModel.find({ OwnerId:ownerId});
-//         console.log(works,'workspaces')
-//         return works
-//     } catch (error) {
-//         console.log("Error findUserByEmail:", error);
-//         throw error;
-// }
-// }
+
 
 const findWorkspaceByOwner = async (ownerId) => {
     try {
@@ -127,23 +64,7 @@ const findWorkspaceByOwner = async (ownerId) => {
 
 
 
-// const findSharedWorkspace = async(userId)=>{
-//     try {
-//         const user = await userModel.find(userId)
 
-//         if(!user||!user.sharedWorkspaces||user.sharedWorkspaces.length===0){
-//             return []
-//         }
-
-//         const sharedWorkspace =  await workspaceModel.find({_id:{ $in: user.sharedWorkspaces }})
-//         return sharedWorkspace
-
-//     } catch (error) {
-//         console.error('error occured in findSharedWorkspace',error)
-//         throw error
-        
-//     }
-// }
 
 const findSharedWorkspace = async (userId) => {
     try {
@@ -200,78 +121,6 @@ try {
     
 }
 }
-
-// const findWorkspaceById = async(userId, email)=>{
-//     try {
-// console.log('in findWorkspaceById')
-//         const workspaceById = workspaceModel.aggregate([
-//            { $facet:{
-//              ownedWorkspace:[
-//                 {$match:{
-//                     ownerId:userId
-
-//                 }}
-//              ],
-//              SharedWorkspaces:[
-//                 {
-//                     $match:{
-//                         members:{
-//                             $elemMatch :{
-//                                 email:email
-//                             }
-//                         }
-//                     }
-//                 },
-                
-//                     {
-//                         $lookup: {
-//                           from: "user",
-//                           let: { OwnerId: "$OwnerId" },
-//                           pipeline: [
-//                             {
-//                               $match: {
-//                                 $expr: {
-//                                   $eq: [ "$_id", { $toObjectId: "$$OwnerId" } ]
-//                                 }
-//                               }
-//                             },
-//                             {
-//                               $project: {
-//                                 _id: 1,
-//                                 name: 1,
-//                                 email: 1
-//                               }
-//                             }
-//                           ],
-//                           as: "OwnerDetails"
-//                         }
-//                       }
-                
-//              ]
-             
-
-//             }}
-//         ]) 
-//         return workspaceById[0];
-        
-//     } catch (error) {
-//         console.log("its the error from fetching My workspaces by Id shared and owned ",error);
-//       throw {msg:"Workspace not found"}
-        
-//     }
-// }
-
-
-// const findWorkspaceById = async(workspaceId)=>{
-//    try {
-//      const workspaceById = await workspaceModel.findById(workspaceId)
-//      return workspaceById
-//    } catch (error) {
-//     console.log(error,'error occured in findWorkspaceById')
-//     throw new Error('fialed to get the workspace by id')
-    
-//    }
-// }
 
 
 

@@ -1,32 +1,38 @@
-import { Server, Socket } from "socket.io";
-import { ChatService } from "../services/chat/chatService";
-import { NotificationService } from "../services/notification/notificationService";
-import { initializeChatSocket } from "./chat-socket";
-import { initializeNotificationSocket } from "./notification-socket";
-
 const userSockets = new Map(); 
-let onlineUsers = new Set();
+const chatSockets = new Map();
 
-export function initializeSocket(
-    io,
-    chatService,
-    notificationService
-) {
+export function initializeSocket(io) {
     io.on("connection", (socket) => {
-        socket.on("register", (userId) => {
-            if (userId) {
-                if (!userSockets.has(userId)) {
-                    userSockets.set(userId, new Set());
+        
+        socket.on("join-chat", (currentChatRoomId) => {
+            if (currentChatRoomId) {
+                if (!chatSockets.has(currentChatRoomId)) {
+                    chatSockets.set(currentChatRoomId, new Set());
                 }
-                userSockets.get(userId)?.add(socket.id);
-                io.emit("user-status", { userId, status: "online" });
+                chatSockets.get(currentChatRoomId).add(socket.id);
+                console.log(`Socket ${socket.id} joined chat ${currentChatRoomId}`);
             }
         });
-
-        socket.on("userConnected", (userId) => {
-            onlineUsers.add(userId);
-            io.emit("userOnline", userId);
-        });
+        
+        socket.on("send-message", async (data) => {
+            try {
+              const { message } = data;
+              const {senderId,chatRoomId} = message
+              if (!senderId || !chatRoomId) {
+                  throw new Error("Invalid message data");
+                }
+                if (chatSockets.has(chatRoomId)) {
+                    chatSockets.get(chatRoomId).forEach((socketId) => {
+                        io.to(socketId).emit("receive-message", message);
+                        console.log(`Message sent to socket ${socketId} in chat ${chatRoomId}`);
+                    });
+                } else {
+                    console.log(`No active sockets found for chat ${chatRoomId}`);
+                }
+            } catch (error) {
+              console.error("Error handling send-message event:", error);
+            }
+          });
 
         socket.on("disconnect", () => {
             for (const [userId, sockets] of userSockets.entries()) {
@@ -34,21 +40,10 @@ export function initializeSocket(
                     sockets.delete(socket.id);
                     if (sockets.size === 0) {
                         userSockets.delete(userId);
-                        onlineUsers.delete(userId);
-                        io.emit("user-status", { userId, status: "offline" });
-                        io.emit("userOffline", userId);
                     }
                     break;
                 }
             }
         });
-
-        initializeChatSocket(socket, io, userSockets, chatService);
-        initializeNotificationSocket(
-            socket,
-            io,
-            userSockets,
-            notificationService
-        );
     });
 }

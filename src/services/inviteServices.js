@@ -215,5 +215,5 @@ const sendInvitation = async (emails, workspaceId) => {
 export default sendInvitation;
 
 {
-  /* <p>invitation link <a href="${invitationLink}">Accept Invitation</a></p> */
+
 }

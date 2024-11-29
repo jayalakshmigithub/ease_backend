@@ -24,17 +24,6 @@ const getUserById = async(_id)=>{
     }
 }
 
-// const getCreateUser = async(data)=>{
-//     try {
-//         const user = await userRepository.createUser(data);
-//         console.log('in get create user',user)
-//         return user
-        
-//     } catch (error) {
-//         console.error(error)
-//     }
-
-// }
 
 
 const getCreateUser = async(data)=>{

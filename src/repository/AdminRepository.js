@@ -117,23 +117,7 @@ const findAllProjects = async()=>{
 }
 
 
-// const findAllProjects = async () => {
-//     try {
 
-//         const projectList = await projectModel.find();
-
-        
-//         for (const project of projectList) {
-//             const workspaceId = project.workspaceId;
-//             project.workspaceDetails = await workspaceModel.findById(workspaceId);
-//         }
-
-//         return projectList;
-//     } catch (error) {
-//         console.error('Error in workspace listing repository', error);
-//         throw error;
-//     }
-// };
 
 
 

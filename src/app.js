@@ -11,7 +11,7 @@ import userRoutes from '../src/routes/userRoutes.js';
 import { refreshTokenController } from './controllers/refreshTokecController.js';
 import adminRouter from './routes/adminRoutes.js';
 
-// import { initializeChatSocket } from './sockets/chatSocket.js';
+import { initializeSocket } from './sockets/socketConnection.js';
 
 
 const app = express()
@@ -38,7 +38,7 @@ app.use(cors({
     credentials:true
 }))
  
-// initializeSocket(io, chatService);
+initializeSocket(io);
 
 app.use(morgan('dev')); 
 
@@ -53,6 +53,6 @@ app.use('/api/admin',adminRouter)
 
 app.post('/api/refresh-token', refreshTokenController);
 
-app.listen(config.PORT,()=>{
+server.listen(config.PORT,()=>{
     console.log(`server running at ${config.PORT} `)
 });

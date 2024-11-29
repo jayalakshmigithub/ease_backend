@@ -10,18 +10,7 @@ const getProject = async(projectData)=>{
     }
 
 }
-// const fetchProjectsByWorkspaceWithMembers = async (workspaceId) => {
-//     try {
-        
-//         const projects = await projectRepository.getProjectsWithMembers(workspaceId);
-//         return projects;
-//     } catch (error) {
-//         console.error("Error in fetchProjectsByWorkspaceWithMembers service:", error);
-//         throw error;
-//     }
-// };
 
-// new for gettign project members
 
 const getProjectMembersEmails = async (projectId) => {
     try {

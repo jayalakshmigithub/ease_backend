@@ -37,21 +37,7 @@ const updateTaskStatus = async (req, res) => {
     }
   };
 
-//   const updateTaskStatus = async (req, res) => {
-//     try {
-//       const { taskId, status } = req.query;  // Get taskId and status from query params
-  
-//       // Call the service to update the task status
-//       const updatedTask = await taskServices.updateTaskStatus(taskId, status);
-  
-//       // Respond with the updated task
-//       res.status(200).json({ message: 'Task status updated', task: updatedTask });
-//     } catch (error) {
-//       console.error('Error in updateTaskStatus controller:', error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   };
-  
+
 
 
 
