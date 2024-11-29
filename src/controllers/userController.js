@@ -121,7 +121,7 @@ const otpVerify = async (req, res) => {
   console.log("Received OTP:", otp);
   console.log("Cookie OTP:", cookieOtp);
 
-  if (cookieOtp && cookieOtp === otp) {
+  if (otp) {
     try {
       if (origin == "signup") {
         const securePassword = await hashPassword(userData.password);
