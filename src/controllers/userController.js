@@ -36,6 +36,7 @@ const signup = async (req, res) => {
 };
 
 const otpgenerate = async (req, res) => {
+  console.log('in otp generate')
   try {
     const { email } = req.body;
     let otp = await otpGenerate(email);
