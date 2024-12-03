@@ -6,6 +6,8 @@ import { workspaceModel } from "../model/workspaceModel.js";
 import { getWorkspace } from "../services/workspaceServices.js";
 import * as workspaceServices from "../services/workspaceServices.js";
 import { response } from "express";
+
+
   
 
 
@@ -121,7 +123,7 @@ const otpVerify = async (req, res) => {
   console.log("Received OTP:", otp);
   console.log("Cookie OTP:", cookieOtp);
 
-
+  if (cookieOtp && cookieOtp === otp) {
     try {
       if (origin == "signup") {
         const securePassword = await hashPassword(userData.password);
@@ -158,9 +160,9 @@ const otpVerify = async (req, res) => {
       console.error("Error creating user:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
-  // } else {
-  //   return res.status(400).json({ message: "Invalid OTP" });
-  // }
+  } else {
+    return res.status(400).json({ message: "Invalid OTP" });
+  }
 };
 
 const signin = async (req, res) => {
