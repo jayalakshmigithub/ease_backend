@@ -20,7 +20,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
     cors:{
-        origin:'https://ease-frontend-two.vercel.app',
+        origin:config.API_URL,
         methods:['GET','POST','PUT'],
         credentials:true
     }
@@ -34,7 +34,7 @@ app.use(cookieParser())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('public/'))
 app.use(cors({
-    origin:'https://ease-frontend-two.vercel.app',
+    origin:config.API_URL,
     credentials:true
 }))
  
