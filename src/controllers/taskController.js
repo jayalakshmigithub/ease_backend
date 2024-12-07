@@ -27,9 +27,12 @@ const updateTaskStatus = async (req, res) => {
     try {
       const { taskId, status } = req.body;  
       if (!taskId || !status) {
+     
+
         return res.status(400).json({ message: 'Task ID and status are required' });
       }
       const updatedTask = await taskServices.updateTaskStatus(taskId, status);
+      console.log("Updating status to:", status);
       res.status(200).json({ message: 'Task status updated', task: updatedTask });
     } catch (error) {
       console.error('Error in updateTaskStatus controller:', error);

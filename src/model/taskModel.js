@@ -72,13 +72,13 @@ const taskSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['ongoing', 'Completed'], 
+    enum: ['ongoing','pending' ,'Completed'], 
     default: 'ongoing',
   },
-  pending: {
-    type: Boolean,
-    default: false,
-  },
+  // pending: {
+  //   type: Boolean,
+  //   default: false,
+  // },
 });
 
 const taskModel = mongoose.model("tasks", taskSchema);
