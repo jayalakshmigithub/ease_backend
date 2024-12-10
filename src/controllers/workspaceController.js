@@ -17,6 +17,7 @@ const createWorkspace = async(req,res)=>{
         const OwnerId = req.userId
 
     const workspaceData = {name,description,OwnerId}
+    console.log('hiii creating workspace',workspaceData)
     const workspace = await workspaceServices.getWorkspace(workspaceData)
     return res.status(200).json({workspace})
     } catch (error) {
@@ -39,6 +40,7 @@ const getWorkspaces = async (req, res) => {
         }
 
         const workspace = await workspaceServices.listWorkspaceByOwner(ownerId);
+        console.log('workspacess',workspace)
         const sharedWorkspace = await workspaceServices.getSharedWorkspaces(userId);
         return res.status(200).json({ workspace, sharedWorkspace });
     } catch (error) {
