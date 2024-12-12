@@ -1,46 +1,6 @@
 import mongoose from "mongoose";
 
-// const taskSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//     required: true,
-//   },
-//   Description: {
-//     type: String,
-//     required: true,
-//   },
-  
-//   // toDate: {
-//   //   type: String,
-//   //   required: true,
-//   // },
-//   // fromDate: {
-//   //   type: String,
-//   //   required: true,
-//   // },
-//   // images: {
-//   //   type: Array,
-//   // },
-//   assignee: [{
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'user'
-// }],
-// projectId: {
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: 'projects'
-// },
-//   status: {
-//     type: Boolean,
-//     default: true,
-//   },
-//   pending: {
-//     type: Boolean,
-//     default: false,
-//   },
-// });
 
-// const taskModel = mongoose.model("tasks", taskSchema);
-// export { taskModel };
 
 const taskSchema = new mongoose.Schema({
   name: {
@@ -79,6 +39,11 @@ const taskSchema = new mongoose.Schema({
   //   type: Boolean,
   //   default: false,
   // },
+  OwnerId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'user',
+    required :true
+}
 });
 
 const taskModel = mongoose.model("tasks", taskSchema);

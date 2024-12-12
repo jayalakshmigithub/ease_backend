@@ -45,6 +45,7 @@ const usersList = async(req,res)=>{
 
 
 const blockUserAccount = async(req,res)=>{
+    console.log('hiii in blockedUserAcc')
     const { _id } = req.body; 
   if (!_id) {
     return res.status(400).json({ message: "User ID is required" });
@@ -52,6 +53,7 @@ const blockUserAccount = async(req,res)=>{
   
   try {
     const blockedUserAcc = await adminServices.getBlockUsers(_id); 
+    console.log('blocked user',blockedUserAcc)
     if (!blockedUserAcc) {
       return res.status(404).json({ message: "User not found" });
     }

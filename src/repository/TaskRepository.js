@@ -21,7 +21,8 @@ const CreateTask = async (taskData) => {
             Description: taskData.description,
             assignee: assignees,  
             priority: taskData.priority,
-            projectId: taskData.projectId
+            projectId: taskData.projectId,
+            OwnerId: taskData.OwnerId,
         });
 
         const saveTask = await newTask.save();
@@ -74,7 +75,9 @@ const updateTaskStatus = async (taskId, status) => {
     }
   };
   
+const findOwnerOfTask = async()=>{
 
+}
 
 export {
     CreateTask,

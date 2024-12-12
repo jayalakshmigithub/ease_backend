@@ -123,7 +123,7 @@ const sendInvitation = async (emails, workspaceId) => {
   const mailOptions = {
     from: config.GMAIL_USER,
     to: email,
-    subject: "You'have been Invited to join EASE",
+    subject: "You'have been Invited to join planIt",
     html: `
     <!DOCTYPE html>
    <html>
