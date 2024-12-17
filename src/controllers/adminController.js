@@ -102,6 +102,7 @@ const workspaceList = async(req,res)=>{
 const projectList = async(req,res)=>{
     try {
         const projectListInAdmin = await adminServices.getAllProjects()
+        console.log(projectListInAdmin,'projectListInAdmin')
         return res.status(200).json(projectListInAdmin)
     } catch (error) {
         console.log(error.message)

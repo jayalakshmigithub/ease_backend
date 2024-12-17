@@ -105,16 +105,36 @@ const findWorkspaceById = async(workspaceId)=>{
     }
 }
 
-const findAllProjects = async()=>{
+const findAllProjects = async () => {
     try {
-        const projectList = projectModel.find()
-        return projectList
-    } catch (error) {
-        console.error('error in workspace lisitng repository',error);
-        throw error
+        const projects = await projectModel
+            .find()
+            .select('projectName workspaceName members.email');
+
         
+        const workspaceIds = [...new Set(projects.map((project) => project.workspaceName))];
+
+        const workspaces = await workspaceModel.find({ _id: { $in: workspaceIds } }).select('name');
+
+     
+        const workspaceMap = {};
+        workspaces.forEach((workspace) => {
+            workspaceMap[workspace._id] = workspace.name;
+        });
+
+
+        const populatedProjects = projects.map((project) => ({
+            ...project._doc,
+            workspaceName: workspaceMap[project.workspaceName] || 'Unknown Workspace',
+        }));
+
+        return populatedProjects;
+    } catch (error) {
+        console.error('Error in fetching project list with workspace names and members:', error);
+        throw error;
     }
-}
+};
+
 
 
 
