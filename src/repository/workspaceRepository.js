@@ -162,31 +162,3 @@ export {
 
 
 
-
-//new in 11/24
-
-// const getWorkspacesByOwner = async (ownerId) => {
-//     try {
-//         return await workspaceModel.find({ OwnerId: ownerId, isDisable: false }).exec();
-//     } catch (error) {
-//         throw new Error('Error fetching workspaces by owner: ' + error.message);
-//     }
-// };
-
-// //new in 11/24
-// const getWorkspacesByMember = async (userId) => {
-//     try {
-//         return await workspaceModel.find({ members: userId, isDisable: false }).exec();
-//     } catch (error) {
-//         throw new Error('Error fetching workspaces by member: ' + error.message);
-//     }
-// };
-
-// //new in 11/24
-// const getInvitedWorkspaces = async (userId) => {
-//     try {
-//         return await workspaceModel.find({ members: userId, isInvited: true, isDisable: false }).exec();
-//     } catch (error) {
-//         throw new Error('Error fetching invited workspaces: ' + error.message);
-//     }
-// };

@@ -5,7 +5,7 @@ import { createWorkspace,getEachWorkspace,getWorkspaces ,inviteUserToWorkspace,s
 import { sendInvitationController, verifyInvitationController } from '../controllers/inviteController.js';
 import { getProjectsInWorkspace, projectCreation ,getEachProject,getProjectMembers} from '../controllers/projectController.js';
 import { fetchProjectTasks, taskCreation, updateTaskStatus } from '../controllers/taskController.js';
-import { createChatRoomController, existingChatRoomController  } from '../controllers/chatRoomController.js';
+import { createChatRoomController, existingChatRoomController, fetchChatRoomsController, fetchChatRoomsWorkspaceController  } from '../controllers/chatRoomController.js';
 // import { changePassword } from '../repository/userRepository.js';
 // import { changePasswordController } from '../services/workspaceServices.js'
 import { checkBlocked } from '../utils/middleware/checkUserBlocked.js';
@@ -18,8 +18,8 @@ import { createMessageController , fetchMessagesController} from '../controllers
 
 const userRoutes = express.Router()
 
-userRoutes.post('/signup',signup)
-userRoutes.post('/signin',signin)
+userRoutes.post('/signup',signup);
+userRoutes.post('/signin',signin);
 
 userRoutes.post('/otpgenerate',otpgenerate);
 userRoutes.post('/verify-otp',otpVerify);
@@ -33,9 +33,9 @@ userRoutes.get('/workspace/:id',verifyToken,checkBlocked,getEachWorkspace);
 // userRoutes.get('/project/:id',verifyToken.getEachProject)
 
 userRoutes.post('/createproject',verifyToken,checkBlocked,projectCreation);
-userRoutes.get('/projects/:id',verifyToken,checkBlocked,getEachProject)
+userRoutes.get('/projects/:id',verifyToken,checkBlocked,getEachProject);
 userRoutes.get('/workspace/:id/members', verifyToken, checkBlocked,getAllMembersByWorkspaceId);
-userRoutes.get('/projects/:id/members',verifyToken,checkBlocked,getProjectMembers)
+userRoutes.get('/projects/:id/members',verifyToken,checkBlocked,getProjectMembers);
 
 
 userRoutes.post('/invite', verifyToken,checkBlocked,inviteUserToWorkspace);
@@ -44,26 +44,32 @@ userRoutes.get('/workspaces/:workspaceId/projects',verifyToken,checkBlocked,getP
 
 
 
-userRoutes.post('/tasks',verifyToken,checkBlocked, taskCreation)
-userRoutes.get('/projects/:projectId/tasks',verifyToken,checkBlocked,fetchProjectTasks)
-userRoutes.put('/tasks/status',verifyToken,checkBlocked,updateTaskStatus)
+userRoutes.post('/tasks',verifyToken,checkBlocked, taskCreation);
+userRoutes.get('/projects/:projectId/tasks',verifyToken,checkBlocked,fetchProjectTasks);
+userRoutes.put('/tasks/status',verifyToken,checkBlocked,updateTaskStatus);
 
 
-userRoutes.get('/chat',verifyToken,checkBlocked,existingChatRoomController)
-userRoutes.post('/chat',verifyToken,checkBlocked,createChatRoomController)
+userRoutes.get('/chat',verifyToken,checkBlocked,existingChatRoomController);
+userRoutes.post('/chat',verifyToken,checkBlocked,createChatRoomController);
 
-userRoutes.get('/messages',verifyToken,checkBlocked,fetchMessagesController)
-userRoutes.post('/messages',verifyToken,checkBlocked,createMessageController)
+userRoutes.get('/messages',verifyToken,checkBlocked,fetchMessagesController);
+userRoutes.post('/messages',verifyToken,checkBlocked,createMessageController);
 
-userRoutes.post('/changepassword',verifyToken,checkBlocked,changePasswordController)
+userRoutes.post('/changepassword',verifyToken,checkBlocked,changePasswordController);
 
-userRoutes.delete('/workspaces/:id',verifyToken,checkBlocked,deleteWorkspaceController)
+userRoutes.delete('/workspaces/:id',verifyToken,checkBlocked,deleteWorkspaceController);
 
-userRoutes.post('/verify-email',validateEmail)
+userRoutes.post('/verify-email',validateEmail);
 
-userRoutes.post('/reset-password',resetPassword)
+userRoutes.post('/reset-password',resetPassword);
 
-userRoutes.post('/change-password',verifyToken,checkBlocked,changePassword)
+userRoutes.post('/change-password',verifyToken,checkBlocked,changePassword);
+
+userRoutes.get('/chats/messages',verifyToken,checkBlocked,fetchChatRoomsController)
+
+userRoutes.get('/chatrooms/:id',verifyToken,checkBlocked,fetchChatRoomsWorkspaceController)
+
+
 
 
 export default userRoutes  

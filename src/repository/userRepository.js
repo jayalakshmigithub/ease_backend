@@ -10,19 +10,18 @@ const findGmail = async (email) => {
   return await userModel.findOne({ email });
 };
 
-
-
-
-
 const createUser = async (userData) => {
-    const { name, email, password, workspaceId } = userData;
+    const { name, email, password, workspaceId ,otp} = userData;
+    console.log(otp)
     try {
       const newUser = await new userModel({
         name,
         email,
         password,
-        sharedWorkspaces: workspaceId ? [workspaceId] : []
+        sharedWorkspaces: workspaceId ? [workspaceId] : [],
+        otp:otp
       }).save();
+      console.log(newUser,'newUser')
       if (workspaceId) {
         const workspace = await workspaceModel.findById(workspaceId);
         if (workspace) {
@@ -62,6 +61,36 @@ const findUserByEmail = async (email) => {
     throw error;
   }
 };
+
+const findUserNotVerified=async(userId)=> {
+  try {
+      return await userModel.findById({ _id: userId, isEmailVerified: false });
+  } catch (error) {
+      console.log("Error findUserNotVerified:", error);
+      throw error;
+    }
+  }
+
+  const findUpdateUserIsVerified=async(userId)=>{
+    try {
+        return await userModel.findByIdAndUpdate(
+            { _id: userId },
+            { isEmailVerified: true }
+        );
+    } catch (error) {
+        console.log("Error findUpdateUserIsVerified:", error);
+        throw error;
+      }
+    }
+
+    const findUpdateUserOtp = async(userId,otp)=>{
+      try {
+          return await userModel.findByIdAndUpdate({ _id: userId }, { otp: otp },{new:true});
+      } catch (error) {
+          console.log("Error findUpdateUserOtp:", error);
+          throw error;
+        }
+      }
 
 const createUserByGoogle = async (userData) => {
   try {
@@ -134,6 +163,9 @@ export {
   createUserByGoogle,
   updateUser,
   updatePassword,
-  changePassword
- 
+  changePassword,
+  findUserNotVerified,
+  findUpdateUserIsVerified,
+  findUpdateUserOtp
+
 };

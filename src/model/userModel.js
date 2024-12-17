@@ -43,7 +43,14 @@ const userSchema = new mongoose.Schema({
       workspaceId: { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Workspace', 
-    }
+    },
+    otp:{
+        type: Number
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false,
+    },
   
 },{timestamps:true});
 

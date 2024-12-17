@@ -6,42 +6,21 @@ import { workspaceModel } from "../model/workspaceModel.js";
 import { getWorkspace } from "../services/workspaceServices.js";
 import * as workspaceServices from "../services/workspaceServices.js";
 import { response } from "express";
-
-
-  
-
-
-const signup = async (req, res) => {
-  try {
-    const { name, email } = req.body;
-    const existUser = await userServices.getByEmail(email);
-    if (existUser) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-    if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Name, email, and password are required" });
-    }
-
-    const securePassword = await hashPassword(password);
-    const user = { name, email, password: securePassword };
-    return res.status(200).json({ user });
-
-   
-  } catch (error) {
-    console.log("Error happened", error.message);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
+import { userModel } from "../model/userModel.js";
 
 const otpgenerate = async (req, res) => {
-  console.log('in otp generate')
+  console.log("in otp generate");
   try {
-    const { email } = req.body;
+    const { email, userId } = req.body;
     let otp = await otpGenerate(email);
     console.log(otp, "otp");
-    res.cookie("otp", otp, { maxAge: 60000 });
+    console.log(userId, "userId");
+
+    const user = await userServices.getUpdateUserOtp(userId, otp);
+    console.log(user, "uiser");
+    setTimeout(async () => {
+      await userModel.updateOne({ email: email }, { $unset: { otp: 1 } });
+    }, 60000);
     return res
       .status(200)
       .json({ message: "OTP generated and sent successfully" });
@@ -111,58 +90,105 @@ const otpgenerate = async (req, res) => {
 //     }
 // };
 
+const signup = async (req, res) => {
+  try {
+    console.log(req.body, "req.body");
+
+    const { userData } = req.body;
+    const email = userData.email;
+    const name = userData.name;
+    const password = userData.password;
+    console.log(userData, "userData");
+    const existUser = await userServices.getByEmail(email);
+    if (existUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+    if (!name || !email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Name, email, and password are required" });
+    }
+    const securePassword = await hashPassword(userData.password);
+    let otp = await otpGenerate(email);
+    const data = {
+      name: userData.name,
+      email: userData.email,
+      password: securePassword,
+      workspaceId: userData.workspaceId,
+      otp,
+    };
+    console.log(otp);
+    const user = await userServices.getCreateUser(data);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userId = user._id.toString();
+    const { accessToken, refreshToken } = generateTokens(res, {
+      userId,
+      userRole: "user",
+    });
+    setTimeout(async () => {
+      await userModel.updateOne({ _id: userId }, { $unset: { otp: 1 } });
+    }, 60000);
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log("Error happened", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const otpVerify = async (req, res) => {
-  const { userData, otp, origin ,} = req.body;
+  const { userData, origin } = req.body;
+  const otp = Number(req.body.otp);
+  console.log("req.body", userData);
   const email = req.body.userData;
-  console.log('userData',userData)
+  const userId = req.body.userData._id;
+  console.log(userId, "idd");
+  const isUser = await userServices.getUserNotVerified(userId);
   if (!userData || !otp) {
     return res.status(400).json({ message: "credential missing" });
   }
 
-  const cookieOtp = req.cookies.otp;
+  if (!isUser?.otp) {
+    return res.status(400).json({ message: "please click Resend OTP" });
+  }
+ 
+
+  if (otp !== isUser?.otp) {
+    return res.status(400).json({ message: "Invalid OTP" });
+  }
 
   console.log("Received OTP:", otp);
-  console.log("Cookie OTP:", cookieOtp);
-
-  if ( otp) {
-    try {
-      if (origin == "signup") {
-        const securePassword = await hashPassword(userData.password);
-        const data = {
-          name: userData.name,
-          email: userData.email,
-          password: securePassword,
-          workspaceId:userData.workspaceId
-        };
-        const user = await userServices.getCreateUser(data);
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
-        }
-        const userId = user._id.toString();
-        const { accessToken, refreshToken } = generateTokens(res, {
-          userId,
-          userRole: "user",
-        });
-        res.clearCookie("otp");
-        return res.status(200).json({
-          user,
-          accessToken,
-          refreshToken,
-          message: "registration success",
-        });
-      } else {
-        const user = await userServices.getByEmail(email);
-        res.clearCookie("otp");
-        return res.status(200).json({
-          user,
-        });
+  try {
+    if (origin == "signup") {
+      const user = await userServices.getUpdateUserIsVerified(isUser?._id);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
       }
-    } catch (error) {
-      console.error("Error creating user:", error);
-      return res.status(500).json({ message: "Internal server error" });
+      const userId = user._id.toString();
+      const { accessToken, refreshToken } = generateTokens(res, {
+        userId,
+        userRole: "user",
+      });
+
+      return res.status(200).json({
+        user,
+        accessToken,
+        refreshToken,
+        message: "registration success",
+      });
+    } else {
+      const user = await userServices.getUserById(userId);
+      console.log(user,'user forgot passt otp verity')
+      // res.clearCookie("otp");
+      return res.status(200).json({
+        user,
+      });
     }
-  } else {
-    return res.status(400).json({ message: "Invalid OTP" });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -277,12 +303,23 @@ const changePasswordController = async (req, res) => {
 const validateEmail = async (req, res) => {
   try {
     const { email } = req.body;
-    const existEmail = await userServices.getByEmail(email);
-    if (!existEmail) {
+    const isValidEmail = await userServices.getByEmail(email);
+    if (!isValidEmail) {
       return res.status(404).json({ message: "Invalid email" });
     }
-    return res.status(200).json({ existEmail });
+    const otp = await otpGenerate(email);
+    const userId = isValidEmail?._id;
+
+    console.log(otp, "forgot");
+    const user =await userServices.getUpdateUserOtp(userId, otp);
+
+    setTimeout(async () => {
+      await user.updateOne({ _id: userId }, { $unset: { otp: 1 } });
+    }, 60000);
+    console.log(user,'user all')
+    return res.status(200).json({ user });
   } catch (err) {
+    console.log(err)
     return res.status(400).json({
       error: err.message,
     });

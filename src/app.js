@@ -35,12 +35,13 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static('public/'))
 app.use(cors({
     origin:config.API_URL,
+    methods: ['GET', 'POST', 'PUT' , 'DELETE'],
     credentials:true
 }))
  
 initializeSocket(io);
 
-// app.use(morgan('dev')); 
+app.use(morgan('dev')); 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", `${config.API_URL}`);
     res.header("Access-Control-Allow-Credentials", "true");

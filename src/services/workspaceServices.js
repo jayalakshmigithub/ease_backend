@@ -234,24 +234,7 @@ const listEachWorkspace = async(workspaceId)=>{
 }
 
 
-// const changePasswordController = async (req, res) => {
-//     const { email, currentPassword, newPassword } = req.body;
-  
-//     try {
-    
-//       const updatedUser = await userService.changePassword( currentPassword, newPassword);
-  
-//       return res.status(200).json({
-//         message: 'Password successfully changed',
-//         user: updatedUser,
-//       });
-//     } catch (err) {
-   
-//       return res.status(400).json({
-//         error: err.message,
-//       });
-//     }
-//   };
+
 
 const deleteWorkspace = async (workspaceId) => {
     const deletedWorkspace = await workspaceRepository.deleteWorkspaceById(workspaceId);
@@ -272,27 +255,8 @@ export {
     listAllWorkspaces,
     findMembersByWorkspaceId,
     deleteWorkspace
-    // changePasswordController
-    // listWorkspaceByMember,
-    // listInvitedWorkspaces
+   
 }
 
 
 
-// //new in 11
-// const listWorkspaceByMember = async (userId) => {
-//     try {
-//         return await workspaceRepository.getWorkspacesByMember(userId);
-//     } catch (error) {
-//         throw new Error('Service error: ' + error.message);
-//     }
-// };
-
-// //new in 11
-// const listInvitedWorkspaces = async (userId) => {
-//     try {
-//         return await workspaceRepository.getInvitedWorkspaces(userId);
-//     } catch (error) {
-//         throw new Error('Service error: ' + error.message);
-//     }
-// };

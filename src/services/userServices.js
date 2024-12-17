@@ -25,10 +25,35 @@ const getUserById = async(_id)=>{
 }
 
 
-
-const getCreateUser = async(data)=>{
+const getUserNotVerified =async(userId)=>{
     try {
-        const user = await userRepository.createUser(data);
+        return await userRepository.findUserNotVerified(userId);
+    } catch (error) {
+        console.log("Error getCreateUser:", error);
+        throw error;
+    }
+}
+
+const getUpdateUserIsVerified=async(userId)=>{
+    try {
+        return await userRepository.findUpdateUserIsVerified(userId);
+    } catch (error) {
+        console.log("Error getUpdateUserIsVerified:", error);
+        throw error;
+    }
+}
+
+const getUpdateUserOtp = async(userId,otp)=>{
+    try {
+        return await userRepository.findUpdateUserOtp(userId, otp);
+    } catch (error) {
+        console.log("Error getUpdateUserOtp:", error);
+        throw error;
+    }
+}
+const getCreateUser = async(userData)=>{
+    try {
+        const user = await userRepository.createUser(userData);
         return user
         
     } catch (error) {
@@ -117,5 +142,8 @@ export  {
     getUpdatedUser,
     changePassword,
     getUpdatePassword,
-    getChangePassword
+    getChangePassword,
+    getUserNotVerified,
+    getUpdateUserIsVerified,
+    getUpdateUserOtp
 }

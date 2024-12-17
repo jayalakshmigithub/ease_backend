@@ -2,7 +2,7 @@ import { Message } from "../model/message.js";
 
 const createMessage = async (data, userId) => {
   try {
-    // console.log("Cretin msg for user:", userId);
+   
 
     const { message, chatId } = data;
     const newMessage = new Message({
@@ -12,7 +12,7 @@ const createMessage = async (data, userId) => {
     });
 
     const result = await newMessage.save();
-    // console.log("Msg created:", result);
+    
     return result;
   } catch (error) {
     console.error("Error creating message:", error);
@@ -30,7 +30,7 @@ const getMessages = async (chatId) => {
       })
       .exec();
 
-    // console.log("Fetchd msgs:", messages);
+    
     return messages;
   } catch (error) {
     console.error("Error getting messages:", error);

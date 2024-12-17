@@ -41,6 +41,7 @@ export function initializeSocket(io) {
         socket.on("mark-as-read", (data) => {
             try {
                 const { messageIds, userId } = data;
+
         
                 if (!messageIds || !userId) {
                     throw new Error("Invalid data for mark-as-read");
@@ -87,55 +88,3 @@ messageIds.forEach((messageId) => {
 
 
 
-
-        //   socket.on("mark-as-read", (data) => {
-        //     try {
-        //         const { messageIds, userId } = data;
-
-        //         if (!messageIds || !userId) {
-        //             throw new Error("Invalid data for mark-as-read");
-        //         }
-
-        //         // Broadcast the message-read event to all sockets in the chat room
-        //         messageIds.forEach((messageId) => {
-        //             for (const [chatRoomId, sockets] of chatSockets.entries()) {
-        //                 if (sockets.has(socket.id)) {
-        //                     sockets.forEach((socketId) => {
-        //                         io.to(socketId).emit("message-read", {
-        //                             messageId,
-        //                             readerId: userId,
-        //                         });
-        //                         console.log(
-        //                             `Message ${messageId} marked as read by user ${userId} in chat ${chatRoomId}`
-        //                         );
-        //                     });
-        //                 }
-        //             }
-        //         });
-        //     } catch (error) {
-        //         console.error("Error handling mark-as-read event:", error);
-        //     }
-        // });
-
-
-
-   //   socket.on("mark-as-read", ({ messageId, chatRoomId }) => {
-        //     try {
-        //         if (!messageId || !chatRoomId) {
-        //             throw new Error("Invalid data for mark-as-read");
-        //         }
-
-              
-        //         if (chatSockets.has(chatRoomId)) {
-        //             chatSockets.get(chatRoomId).forEach((socketId) => {
-        //                 io.to(socketId).emit("message-read", {
-        //                     messageId,
-        //                     chatRoomId,
-        //                 });
-        //             });
-        //         }
-        //         console.log(`Message ${messageId} marked as read in chat ${chatRoomId}`);
-        //     } catch (error) {
-        //         console.error("Error handling mark-as-read event:", error);
-        //     }
-        // });
