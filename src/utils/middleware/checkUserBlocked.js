@@ -1,10 +1,6 @@
 
 import * as userServices from '../../services/userServices.js'
 
-
-
-
-
 export const checkBlocked = async (req, res, next) => {
     try {
         const userId = req.userId;

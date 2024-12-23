@@ -42,6 +42,8 @@ const getWorkspaces = async (req, res) => {
         const workspace = await workspaceServices.listWorkspaceByOwner(ownerId);
         console.log('workspacess',workspace)
         const sharedWorkspace = await workspaceServices.getSharedWorkspaces(userId);
+        // console.log('Owned Workspaces:', workspace);
+        // console.log('Shared Workspaces:', sharedWorkspace);
         return res.status(200).json({ workspace, sharedWorkspace });
     } catch (error) {
         console.error('Error fetching workspaces:', error);

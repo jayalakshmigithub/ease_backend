@@ -369,6 +369,34 @@ const changePassword = async (req, res) => {
   }
 };
 
+
+const getBlockStatus = async (req, res) => {
+  console.log('get here');
+  try {
+    const userId = req.userId; 
+    console.log(userId, 'userId');
+
+    if (!userId) {
+      return res.status(400).json({ message: "User  ID is missing." });
+    }
+
+    const user = await userServices.getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User  not found." });
+    }
+
+    if (user.isBlocked) {
+      return res.status(200).json({ isBlocked: true, message: "Your account has been blocked." });
+    }
+
+    return res.status(200).json({ isBlocked: false });
+  } catch (error) {
+    console.error("Error in getBlockStatus:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
 export {
   signup,
   otpgenerate,
@@ -381,4 +409,5 @@ export {
   // gettworkkks,
   updateUserProfile,
   changePasswordController,
+  getBlockStatus
 };

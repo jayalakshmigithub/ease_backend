@@ -17,12 +17,12 @@ export const otpGenerate = async(email)=>{
 
   
     const info = await transporter.sendMail( {
-      from: '"EASE" <lakshmijaya2912@gmail.com>', 
+      from: '"planIt" <lakshmijaya2912@gmail.com>', 
       to: email, 
       subject: "Your One-Time Password (OTP) for Secure Login", 
       text: `Your OTP for login is ${otp}`, 
       html: `<h2> OTP for login </h2>
-      <p>Your OTP for login in EASE <strong>${otp}</strong></p>`, 
+      <p>Your OTP for login in planIt <strong>${otp}</strong></p>`, 
     })
     
  

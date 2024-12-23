@@ -24,6 +24,7 @@ export function initializeSocket(io) {
                   throw new Error("Invalid message data");
                 }
                 if (chatSockets.has(chatRoomId)) {
+                    console.log(message,'mesage backend sockreet')
                     chatSockets.get(chatRoomId).forEach((socketId) => {
                         io.to(socketId).emit("receive-message", message);
                         console.log(`Message sent to socket ${socketId} in chat ${chatRoomId}`);

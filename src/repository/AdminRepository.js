@@ -109,7 +109,7 @@ const findAllProjects = async () => {
     try {
         const projects = await projectModel
             .find()
-            .select('projectName workspaceName members.email');
+            .select('projectName workspaceName members.email fromDate');
 
         
         const workspaceIds = [...new Set(projects.map((project) => project.workspaceName))];
@@ -119,7 +119,7 @@ const findAllProjects = async () => {
      
         const workspaceMap = {};
         workspaces.forEach((workspace) => {
-            workspaceMap[workspace._id] = workspace.name;
+            workspaceMap[workspace._id.toString()] = workspace.name; 
         });
 
 

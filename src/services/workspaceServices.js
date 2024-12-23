@@ -183,6 +183,7 @@ const listWorkspaceByOwner = async(ownerId)=>{
         console.log('errorr getWorkssss',error)
         throw error
         
+        
     }
 }
 

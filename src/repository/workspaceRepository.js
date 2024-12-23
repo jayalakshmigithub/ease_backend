@@ -6,6 +6,7 @@ import { workspaceModel } from "../model/workspaceModel.js"
 import { userModel } from "../model/userModel.js";
 
 
+
 const findworkspaceById = async (workspaceId) => {
     try {
         const workspace = await workspaceModel.findById(workspaceId).populate('members.userId', 'email');
@@ -54,13 +55,42 @@ const findWorkspaceByOwner = async (ownerId) => {
     try {
         
         const works = await workspaceModel.find({ OwnerId: ownerId })
-            .populate('members', 'email'); 
+        .populate('OwnerId','name')
+            .populate('members', 'email');
+            
         return works;
     } catch (error) {
         console.log("Error in findWorkspaceByOwner:", error);
         throw error;
     }
 };
+
+// const findWorkspaceByOwner = async (ownerId) => {
+//     try {
+//         const works = await workspaceModel
+//             .find({ OwnerId: ownerId })
+//             .populate('members', 'email') 
+//             .populate('OwnerId', 'name') 
+             
+
+//         const formattedWorks = works.map(workspace => ({
+//             id: workspace._id,
+//             name: workspace.name,
+//             ownerName: workspace.OwnerId?.name || 'Unknown',
+//             memberCount: workspace.members.length,
+//             projects: workspace.projects.length, 
+//             description: workspace.description,
+//             // createdAt: workspace.createdAt,
+            
+//         }));
+
+//         return formattedWorks;
+//     } catch (error) {
+//         console.log("Error in findWorkspaceByOwner:", error);
+//         throw error;
+//     }
+// };
+
 
 
 
@@ -78,7 +108,8 @@ const findSharedWorkspace = async (userId) => {
 
      
         const sharedWorkspaceIds = user.sharedWorkspaces; 
-        const sharedWorkspaces = await workspaceModel.find({ _id: { $in: sharedWorkspaceIds } });
+        const sharedWorkspaces = await workspaceModel.find({ _id: { $in: sharedWorkspaceIds } })
+        .populate('OwnerId', 'name');
 
         return sharedWorkspaces; 
     } catch (error) {

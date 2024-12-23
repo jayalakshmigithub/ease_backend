@@ -1,5 +1,5 @@
 import express from 'express'
-import {signup,otpgenerate,otpVerify, signin,signinByGoogle, updateUserProfile,validateEmail,resetPassword,changePassword} from '../controllers/userController.js'
+import {signup,otpgenerate,otpVerify, signin,signinByGoogle, updateUserProfile,validateEmail,resetPassword,changePassword, getBlockStatus} from '../controllers/userController.js'
 import {verifyToken} from '../utils/middleware/authMiddleware.js'
 import { createWorkspace,getEachWorkspace,getWorkspaces ,inviteUserToWorkspace,sharedWorkspace,getAllMembersByWorkspaceId, deleteWorkspaceController} from '../controllers/workspaceController.js'
 import { sendInvitationController, verifyInvitationController } from '../controllers/inviteController.js';
@@ -68,6 +68,8 @@ userRoutes.post('/change-password',verifyToken,checkBlocked,changePassword);
 userRoutes.get('/chats/messages',verifyToken,checkBlocked,fetchChatRoomsController)
 
 userRoutes.get('/chatrooms/:id',verifyToken,checkBlocked,fetchChatRoomsWorkspaceController)
+
+
 
 
 

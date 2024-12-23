@@ -11,9 +11,13 @@ const createMessage = async (data, userId) => {
       chatRoomId: chatId,
     });
 
-    const result = await newMessage.save();
+    const chat = (await newMessage.save()).populate({
+      path: "senderId",
+      model: "user",
+      select: "name email",
+    })
     
-    return result;
+    return chat;
   } catch (error) {
     console.error("Error creating message:", error);
     throw error;
